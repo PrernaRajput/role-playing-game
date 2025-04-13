@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import './App.scss';
 import { isEmpty } from 'lodash';
 import Preloader from './utils/preloader.util';
-import attackPreloader from './assets/lottie/fight.json'; // Path to your Lottie animation JSON file
+import attackPreloader from './assets/lottie/fight.json';
+import dragonAttackPreloader from './assets/lottie/dragonAttack.json';
+import playerSpellPreloader from './assets/lottie/playerSpell.json';
 
 function App () {
-    const [playerHealth, setPlayerHealth] = useState( 100 );
+    const [playerHealth, setPlayerHealth] = useState( 1000 );
     const [playerMana, setPlayerMana] = useState( 100 );
     const [enemyHealth, setEnemyHealth] = useState( 100 );
     const [enemyMana, setEnemyMana] = useState( 100 );
@@ -17,24 +19,24 @@ function App () {
     const [enemyCriticalChance, setEnemyCriticalChance] = useState( 0.2 );
     const [battleLog, setBattleLog] = useState( [] );
     const [currentView, setCurrentView] = useState( 'battle' ); // battle | store | cave
-    const [playerGold, setPlayerGold] = useState( 100 );
+    const [playerGold, setPlayerGold] = useState( 1000 );
     const [playerWeaponBonus, setPlayerWeaponBonus] = useState( 0 );
     const [enemyName, setEnemyName] = useState( 'Dragon' );
     const [showAttackAnimation, setShowAttackAnimation] = useState( null );
-    
+
     const getRandomInt = ( min, max ) => Math.floor( Math.random() * ( max - min + 1 ) ) + min;
 
     const addBattleLog = ( message ) => {
         setBattleLog( prevLog => [message, ...prevLog] );
     };
-    
+
     const hidePreloader = () => {
-        setTimeout(() => {
-            setShowAttackAnimation(null);
-        }, 700 );
+        setTimeout( () => {
+            setShowAttackAnimation( null );
+        }, 1000 );
     }
-    const showPreloader = ({animationData={}}) => {
-        setShowAttackAnimation({ animationData: animationData });
+    const showPreloader = ( { animationData = {} } ) => {
+        setShowAttackAnimation( { animationData: animationData } );
     }
     const initBattle = ( type = 'battle' ) => {
         if ( type === 'battle' ) {
@@ -55,7 +57,7 @@ function App () {
     };
 
     const playerAttack = () => {
-        showPreloader( {animationData: attackPreloader} );
+        showPreloader( { animationData: attackPreloader } );
         const isCritical = Math.random() < playerCriticalChance;
         const baseDamage = getRandomInt( 10, 20 ) + playerWeaponBonus;
         const damage = baseDamage * ( isCritical ? 2 : 1 );
@@ -69,12 +71,14 @@ function App () {
     const playerCastSpell = () => {
         const manaCost = 20;
         if ( playerMana >= manaCost ) {
+            showPreloader( { animationData: playerSpellPreloader } );
             const isCritical = Math.random() < playerCriticalChance;
             const baseDamage = getRandomInt( 20, 30 ) + playerWeaponBonus;
             const damage = baseDamage * ( isCritical ? 2 : 1 );
             setEnemyHealth( prev => Math.max( prev - damage, 0 ) );
             setPlayerMana( prev => prev - manaCost );
             setPlayerGold( prev => Math.max( prev + getRandomInt( 10, 20 ) + playerWeaponBonus, 0 ) );
+            hidePreloader();
             addBattleLog( `Player casts spell and ${isCritical ? 'critically ' : ''}deals ${damage} damage to ${enemyName}!` );
             enemyTurn();
         } else {
@@ -97,22 +101,28 @@ function App () {
 
             const enemyAction = Math.random() < 0.5 ? 'attack' : 'castSpell';
             if ( enemyAction === 'attack' ) {
+                showPreloader( { animationData: dragonAttackPreloader } );
                 const isCritical = Math.random() < enemyCriticalChance;
                 const damage = getRandomInt( 10, 25 );
+                hidePreloader();
                 setPlayerHealth( prev => Math.max( prev - damage, 0 ) );
                 addBattleLog( `${enemyName} ${isCritical ? 'critically ' : ''}attacks Player for ${damage} damage!` );
             } else if ( enemyMana >= 20 ) {
+                showPreloader( { animationData: dragonAttackPreloader } );
                 const isCritical = Math.random() < enemyCriticalChance;
                 const damage = getRandomInt( 20, 35 );
+                hidePreloader();
                 setPlayerHealth( prev => Math.max( prev - damage, 0 ) );
                 setEnemyMana( prev => prev - 20 );
                 addBattleLog( `${enemyName} casts spell and ${isCritical ? 'critically ' : ''}deals ${damage} damage to Player!` );
             } else {
+                showPreloader( { animationData: dragonAttackPreloader } );
                 const damage = getRandomInt( 10, 25 );
+                hidePreloader();
                 setPlayerHealth( prev => Math.max( prev - damage, 0 ) );
                 addBattleLog( `${enemyName} attacks Player for ${damage} damage!` );
             }
-        }, 500 );
+        }, 1250 );
     };
 
     const restartGame = () => {
@@ -169,10 +179,22 @@ function App () {
             addBattleLog( 'You have been defeated!' );
         }
     }, [playerHealth] );
+    
+    useEffect(() => {
+        if (enemyHealth === 0) {
+            if (currentView === 'cave') {
+                setPlayerGold(prev => prev + 100);
+                addBattleLog('You defeated the Cave Troll and earned 100 gold!');
+            } else {
+                setPlayerGold(prev => prev + 50);
+                addBattleLog('You defeated the enemy and earned 50 gold!');
+            }
+        }
+    }, [enemyHealth, currentView]);
 
     return (
         <div className="App">
-            {!isEmpty(showAttackAnimation) && <Preloader animationData={showAttackAnimation.animationData} />}
+            {!isEmpty( showAttackAnimation ) && <Preloader animationData={showAttackAnimation.animationData} />}
             <div className="game-header">
                 <div className='game-header_title'>RPG Battle</div>
                 <div className='game-header_subTitle'>Gold: {playerGold}</div>
@@ -204,19 +226,23 @@ function App () {
 
             {currentView === 'store' && (
                 <div className="store">
-                    <h2>Store </h2>
-                    <button onClick={buyHealthPotion}>Buy Health Potion (30 Gold)</button>
-                    <button onClick={buyManaPotion}>Buy Mana Potion (20 Gold)</button>
-                    <button onClick={buyWeaponUpgrade}>Buy Weapon Upgrade (50 Gold)</button>
+                    <div className='store_title'>Store </div>
+                    <div className='store_button'>
+                        <button className='store_button_health' onClick={buyHealthPotion}>Buy Health Potion (30 Gold)</button>
+                        <button className='store_button_mana' onClick={buyManaPotion}>Buy Mana Potion (20 Gold)</button>
+                        <button className='store_button_weapon' onClick={buyWeaponUpgrade}>Buy Weapon Upgrade (50 Gold)</button>
+                    </div>
                     <br />
-                    <button onClick={() => goToView( 'battle' )}>Back to Battlefield </button>
-                    <button onClick={() => goToView( 'cave' )}>Go to Cave </button>
+                    <div className="store_navigation">
+                        <button onClick={() => goToView( 'battle' )}>Back to Battlefield </button>
+                        <button onClick={() => goToView( 'cave' )}>Go to Cave </button>
+                    </div>
                 </div>
             )}
 
             {currentView === 'cave' && (
                 <div className="cave">
-                    <h2>Dark Cave </h2>
+                    <div className='cave_title'>Dark Cave </div>
                     <div className="battlefield">
                         <div className="player">
                             <h2>Player</h2>
@@ -232,8 +258,10 @@ function App () {
                             <p>Mana: {enemyMana} / {enemyMaxMana}</p>
                         </div>
                     </div>
-                    <button onClick={() => goToView( 'store' )}>Go to Store </button>
-                    <button onClick={() => goToView( 'battle' )}>Back to Battlefield </button>
+                    <div className="cave_navigation">
+                        <button onClick={() => goToView( 'store' )}>Go to Store </button>
+                        <button onClick={() => goToView( 'battle' )}>Back to Battlefield </button>
+                    </div>
                 </div>
             )}
 

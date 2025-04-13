@@ -42,7 +42,7 @@ const Preloader = ({animationData={}}) => {
         zIndex: 9999
       }}
     >
-      <Lottie options={lottieOptions} height={200} width={200} />
+      <Lottie options={lottieOptions} height={400} width={400} />
     </div>
   );
 };
