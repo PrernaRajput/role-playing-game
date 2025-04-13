@@ -1,0 +1,40 @@
+.overlay-preloader {
+	box-sizing: border-box;
+	position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    background-color: rgba($color: #ffffff, $alpha: 0.5);
+    
+    &--remoteApp {
+        position: static;
+        height: 100% !important;
+        width: 100%;
+        display: flex;
+        min-height: 643px;
+    }
+
+    &--isRemoteAppContainer {
+        position: static;
+        height: inherit;
+        width: inherit;
+        min-height: inherit;
+    }
+
+    &__loading {
+        margin-top: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    object{
+        width: 25%;
+    }
+}

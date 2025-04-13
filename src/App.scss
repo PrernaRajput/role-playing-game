@@ -1,0 +1,109 @@
+.App {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  background-color: #1e1e2f;
+  color: #f4f4f4;
+  padding: 20px;
+  min-height: calc(100vh - 40px); // accommodating the padding
+  background: url('../src/assets/background-image.jpeg') no-repeat center fixed;
+  background-size: cover;
+  max-width: 1750px;
+}
+
+.game-header{
+    display: block;
+    &_title{
+        font-family: serif;
+        font-size: 34px;
+        font-weight: 900;
+        color: #1e374e;
+        line-height: 40px;
+    }
+    
+    &_subTitle{
+    display: block;
+    font-size: 22px;
+    font-weight: 900;
+    font-family: fantasy;
+    color: #1e374e;
+    }
+}
+.battlefield {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.player,
+.enemy {
+  border: 1px solid #444;
+  padding: 20px;
+  border-radius: 10px;
+  width: 200px;
+  font-family: fantasy;
+  font-weight: 900;
+  color:#112a3f
+}
+.player{
+    background-color: #feb9c3;
+    background-image: repeating-radial-gradient(#fffbfc, #f3d2d1, #fbfbfb 100px);
+    transform: perspective(260px) rotateY(0deg) skewX(0deg) translateZ(-16px);
+    box-shadow: 10px 10px 20px rgba(0,0,0,0.4);
+    border: 2px solid #f3d2d1;
+    opacity: 0.9;
+}
+.enemy{
+    background-color: #bde17d;
+    background-image: repeating-radial-gradient(#bbecf1, #99c8ff, #c7fbf9 100px);
+    transform: perspective(260px) rotateY(0deg) skewX(0deg) translateZ(-16px);
+    box-shadow: 10px 10px 20px rgba(0,0,0,0.4);
+    border: 2px solid #99c8ff;
+    opacity: 0.9;
+}
+
+button {
+  margin: 5px;
+  padding: 10px 20px;
+  background-color: #112a3f;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.attack-button:hover{
+    background-image: linear-gradient(#ffb4a3, #eb4627);
+  }
+  
+.spell-button:hover{
+    background-image: linear-gradient(#9fcdf5, #5bb1fc);
+  }
+
+button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+.battle-log {
+    font-weight: 500;
+    text-align: left;
+    line-height: 1.5;
+    margin: 0 auto;
+    overflow: hidden;
+    width: 50%;
+    height: 400px;
+    color: #112a3f;
+    &_header{
+        font-size: 24px;
+        font-weight: bold;
+        font-family: math;
+    }
+}
+
+.battle-log ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 0;
+  height: 332px;
+  overflow: scroll;
+}
