@@ -22,7 +22,7 @@
         "prepare": "husky install",
         "sass": "sass input.scss output.css",
         "predeploy": "npm run build",
-        "deploy": "gh-pages -d build",
+        "deploy": "gh-pages -d build"
     },
     "eslintConfig": {
         "extends": [
@@ -43,6 +43,7 @@
         ]
     },
     "devDependencies": {
+        "gh-pages": "^6.3.0",
         "husky": "^9.1.7",
         "lint-staged": "^15.5.0",
         "lottie-react": "^2.4.1",
