@@ -20,7 +20,9 @@
         "eject": "react-scripts eject",
         "format": "prettier --write .",
         "prepare": "husky install",
-        "sass": "sass input.scss output.css"
+        "sass": "sass input.scss output.css",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d build",
     },
     "eslintConfig": {
         "extends": [
