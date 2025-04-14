@@ -2,7 +2,7 @@
 
 A simple turn-based RPG battle game built with React.  
 Fight enemies, cast spells, and earn gold as you defeat foes in different locations like the forest and cave!
-
+See the live version at : https://prernarajput.github.io/role-playing-game/
 ---
 
 ## Features
