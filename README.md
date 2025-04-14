@@ -13,6 +13,7 @@ Fight enemies, cast spells, and earn gold as you defeat foes in different locati
 - 💰 Earn gold rewards after defeating enemies.
 - 📜 Battle log to keep track of actions.
 - 🔄 Game resets when player health reaches zero.
+- ⏳ Loading animation after each action (player attack/spell and enemy attack/spell) for smooth gameplay experience.
 
 ---
 
