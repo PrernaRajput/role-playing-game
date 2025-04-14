@@ -2,6 +2,7 @@
     "name": "role_playing_game",
     "version": "0.1.0",
     "private": true,
+    "homepage": "https://PrernaRajput.github.io/role-playing-game",
     "dependencies": {
         "@testing-library/dom": "^10.4.0",
         "@testing-library/react": "^16.3.0",
