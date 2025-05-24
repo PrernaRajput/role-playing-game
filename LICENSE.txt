@@ -1,0 +1,7 @@
+## License
+
+This project is not licensed for reuse. The source code is available for viewing only and may not be used, copied, modified, or redistributed without permission.
+
+Copyright Prerna Rajput 2025
+
+This code is provided for viewing purposes only. You may not use, copy, modify, or distribute this code for any personal or commercial purposes without explicit permission from the author.
